@@ -34,9 +34,6 @@ RecGURU
 │  ├── gan_training.py                        Training methods of the GAN framework
 │  ├── train_auto.py                          Main function for training and testing single-domain sequential recommender
 │  ├── train_gan.py                           Main function for training and testing cross-domain sequential recommender
-│  ├── train_auto-em.py                            embedding and mapping method
-├── DOML                                      DOML baseline
-├── Bert4Rec                                  Bert4Rec baseline method
 └── .gitignore                                gitignore file
 ```
 
@@ -78,14 +75,6 @@ RecGURU
     ```
 2. Cross-Domain Methods: 
     ```shell
-    # MF-EM 
-    python train_mf-em.py --dataset "movie_book" --domain "b" --run 3 --factor_num 64 
-    # CMF
-    python train_cmf.py --dataset "movie-book" --run 1 --factor_num 64 --epochs 500
-    # Auto-EM
-    python train_auto_em.py 
-    # CnGAN
-    python train_cngan.py --dataset "movie_book" --domain "b" --run 1 --factor_num 64 
     # RecGURU
     python train_gan.py --cross "True"
     ``` 
