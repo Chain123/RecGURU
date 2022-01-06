@@ -40,7 +40,7 @@ RecGURU
 <!-- Dataset -->
 ## Dataset
 1. The public datasets: Amazon view dataset at: https://nijianmo.github.io/amazon/index.html
-2. Collected datasets: https://drive.google.com/file/d/1Eszu-mApyzvVj6tAunPuYql6aIJlQmhg/view?usp=sharing (tar.gz) or https://drive.google.com/file/d/1NbP48emGPr80nL49oeDtPDR3R8YEfn4J/view (.gz file)
+2. Collected datasets: https://drive.google.com/file/d/1Eszu-mApyzvVj6tAunPuYql6aIJlQmhg/view?usp=sharing (tar.gz) or https://drive.google.com/file/d/1NbP48emGPr80nL49oeDtPDR3R8YEfn4J/view (.gz file use 7z to unzip)
 3. Data processing: 
 #### Amazon dataset: 
     ```shell
