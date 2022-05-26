@@ -267,14 +267,14 @@ def train_gan(netG, netD, rec_loader, opt_d, opt_g,
             except StopIteration:
                 a_iterator = iter(rec_loader[0])
                 in_seq_a, dec_in_a, dec_out_a, n_items_a, _, _, bs, sl = get_next_batch(a_iterator, device)
-            in_seq_ae = get_user_embed(netG, in_seq_a, "a", param, device, param.vocab_size_a)
+            in_seq_ae = get_user_embed(netG, in_seq_a, "a", param, device, 0)
             # b domain data
             try:
                 in_seq_b, dec_in_b, dec_out_b, n_items_b, _, _, bs, sl = get_next_batch(b_iterator, device)
             except StopIteration:
                 b_iterator = iter(rec_loader[1])
                 in_seq_b, dec_in_b, dec_out_b, n_items_b, _, _, bs, sl = get_next_batch(b_iterator, device)
-            in_seq_be = get_user_embed(netG, in_seq_b, "b", param, device, param.vocab_size_b)
+            in_seq_be = get_user_embed(netG, in_seq_b, "b", param, device, 0)
 
             # =============== overlap data loader
             try:
@@ -282,8 +282,8 @@ def train_gan(netG, netD, rec_loader, opt_d, opt_g,
             except StopIteration:
                 overlap_iter = iter(train_overlap)
                 overlap_a, overlap_b = next(overlap_iter)
-            over_seq_ae = get_user_embed(netG, overlap_a[0].to(device), "a", param, device, param.vocab_size_a)
-            over_seq_be = get_user_embed(netG, overlap_b[0].to(device), "b", param, device, param.vocab_size_b)
+            over_seq_ae = get_user_embed(netG, overlap_a[0].to(device), "a", param, device, 0)
+            over_seq_be = get_user_embed(netG, overlap_b[0].to(device), "b", param, device, 0)
             overlap_loss = l2_func(over_seq_ae, over_seq_be)
             # go through dis for gan loss
             D_real = netD(in_seq_ae)  # output of dis is a logits. (scalar)
@@ -467,7 +467,7 @@ def train_gan_all(netG, netD, gan_loader, opt_d, opt_g, device, param, iteration
                         a_iterator = iter(gan_loader[0])  # rand a-domain data
                     in_seq_a, dec_in_a, dec_out_a, n_items_a, _, _, bs, sl = get_next_batch(a_iterator, device)
                     #  bs, sl are the same in different domain.
-                in_seq_ae = get_user_embed(netG, in_seq_a, "a", param, device, param.vocab_size_a)
+                in_seq_ae = get_user_embed(netG, in_seq_a, "a", param, device, 0)
                 # b domain data
                 try:
                     in_seq_b, dec_in_b, dec_out_b, n_items_b, _, _, bs, sl = get_next_batch(b_iterator, device)
@@ -477,7 +477,7 @@ def train_gan_all(netG, netD, gan_loader, opt_d, opt_g, device, param, iteration
                     else:
                         b_iterator = iter(gan_loader[1])  # random b-domain
                     in_seq_b, dec_in_b, dec_out_b, n_items_b, _, _, bs, sl = get_next_batch(b_iterator, device)
-                in_seq_be = get_user_embed(netG, in_seq_b, "b", param, device, param.vocab_size_b)
+                in_seq_be = get_user_embed(netG, in_seq_b, "b", param, device, 0)
 
                 D_real = netD(in_seq_ae)  # output of dis is a logits. (scalar)
                 D_fake = netD(in_seq_be)
@@ -497,8 +497,8 @@ def train_gan_all(netG, netD, gan_loader, opt_d, opt_g, device, param, iteration
                     except StopIteration:
                         overlap_iter = iter(train_overlap)
                         overlap_a, overlap_b = next(overlap_iter)
-                    over_seq_ae = get_user_embed(netG, overlap_a[0].to(device), "a", param, device, param.vocab_size_a)
-                    over_seq_be = get_user_embed(netG, overlap_b[0].to(device), "b", param, device, param.vocab_size_b)
+                    over_seq_ae = get_user_embed(netG, overlap_a[0].to(device), "a", param, device, 0)
+                    over_seq_be = get_user_embed(netG, overlap_b[0].to(device), "b", param, device, 0)
                     # overlap_loss = l2_loss(over_seq_ae, over_seq_be)
                     if torch.cuda.device_count() > 1:
                         overlap_loss = l2_func.module.forward_2(over_seq_ae, over_seq_be)
@@ -704,7 +704,7 @@ def train_gan_all_2(netG, netD, gan_loader, opt_d, opt_g, device, param, iters,
                         a_iterator = iter(gan_loader[0])  # rand a-domain data
                     in_seq_a, dec_in_a, dec_out_a, n_items_a, _, _, bs, sl = get_next_batch(a_iterator, device)
                     # bs, sl are the same in different domain.
-                in_seq_ae = get_user_embed(netG, in_seq_a, "a", param, device, param.vocab_size_a)
+                in_seq_ae = get_user_embed(netG, in_seq_a, "a", param, device, 0)
                 # b domain data
                 try:
                     in_seq_b, dec_in_b, dec_out_b, n_items_b, _, _, bs, sl = get_next_batch(b_iterator, device)
@@ -714,7 +714,7 @@ def train_gan_all_2(netG, netD, gan_loader, opt_d, opt_g, device, param, iters,
                     else:
                         b_iterator = iter(gan_loader[1])  # random b-domain
                     in_seq_b, dec_in_b, dec_out_b, n_items_b, _, _, bs, sl = get_next_batch(b_iterator, device)
-                in_seq_be = get_user_embed(netG, in_seq_b, "b", param, device, param.vocab_size_b)
+                in_seq_be = get_user_embed(netG, in_seq_b, "b", param, device, 0)
 
                 D_real = netD(in_seq_ae)  # output of dis is a logits. (scalar)
                 D_fake = netD(in_seq_be)
@@ -733,8 +733,8 @@ def train_gan_all_2(netG, netD, gan_loader, opt_d, opt_g, device, param, iters,
                 except StopIteration:
                     overlap_iter = iter(train_overlap)
                     overlap_a, overlap_b = next(overlap_iter)
-                over_seq_ae = get_user_embed(netG, overlap_a[0].to(device), "a", param, device, param.vocab_size_a)
-                over_seq_be = get_user_embed(netG, overlap_b[0].to(device), "b", param, device, param.vocab_size_b)
+                over_seq_ae = get_user_embed(netG, overlap_a[0].to(device), "a", param, device, 0)
+                over_seq_be = get_user_embed(netG, overlap_b[0].to(device), "b", param, device, 0)
                 # overlap_loss = l2_loss(over_seq_ae, over_seq_be)
                 if torch.cuda.device_count() > 1:
                     overlap_loss = l2_func.module.forward_2(over_seq_ae, over_seq_be)
